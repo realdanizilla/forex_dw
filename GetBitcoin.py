@@ -1,34 +1,33 @@
+# GetBitcoin.py
 import requests
-from datetime import datetime
 import pandas as pd
+from datetime import datetime
 
-def get_bitcoin_df():# URL endpoint for the Coinbase API to get the current price of Bitcoin
+def get_bitcoin_df() -> pd.DataFrame:
+    # URL da API da Coinbase para o preço spot do Bitcoin
     url = "https://api.coinbase.com/v2/prices/spot"
-
 
     # Requisição GET
     response = requests.get(url)
-    #print(response.json())
-
     data = response.json()
 
-    # Extrair os dados que eu quero
+    # Extrair dados relevantes
     preco = float(data['data']['amount'])
-    ativo = data['data']['base']
-    moeda = data['data']['currency']
-    data_coleta = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-    #print(preco)
-    #print(ativo)
-    #print(moeda)
-    #print(data_coleta)
+    ativo = data['data']['base']        # "BTC"
+    moeda = data['data']['currency']    # "USD"
+    horario_coleta = datetime.now()
 
-    dataframe = pd.DataFrame({
-        'ativo': [ativo],
-        'moeda': [moeda],
-        'preco': [preco],
-        'data_coleta': [data_coleta]
-    })
-    return dataframe
-    #print(dataframe)
+    # Criar DataFrame no padrão em português
+    df = pd.DataFrame([{
+        'ativo': ativo,
+        'preco': preco,
+        'moeda': moeda,
+        'horario_coleta': horario_coleta
+    }])
 
- 
+    return df
+
+if __name__ == "__main__":
+    df = get_bitcoin_df()
+    print(df)
+    print("✅ Cotação do Bitcoin obtida com sucesso!")

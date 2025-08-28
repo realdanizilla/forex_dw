@@ -15,10 +15,10 @@ def get_commodities_df() -> pd.DataFrame:
         ultimo_df = ultimo_df.rename(columns={"Close": "preco"})
         ultimo_df["ativo"] = sym
         ultimo_df["moeda"] = "USD"
-        ultimo_df["data_coleta"] = datetime.now()
+        ultimo_df["horario_coleta"] = datetime.now()
 
         # Garantir ordem das colunas
-        ultimo_df = ultimo_df[["ativo", "preco", "moeda", "data_coleta"]]
+        ultimo_df = ultimo_df[["ativo", "preco", "moeda", "horario_coleta"]]
 
         dfs.append(ultimo_df)
 
